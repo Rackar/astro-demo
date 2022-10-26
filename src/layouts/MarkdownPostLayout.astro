@@ -1,7 +1,40 @@
 ---
+import BaseLayout from "./BaseLayout.astro";
+import TagLink from "../components/Blog/TagLink.astro";
 const { frontmatter } = Astro.props;
 ---
 
-<h1>{frontmatter.title}</h1>
-<p>Written by {frontmatter.author}</p>
-<slot />
+<BaseLayout pageTitle={frontmatter.title}>
+  <a href="/blog">Return Blog list</a>
+  <p>Published on: {frontmatter.pubDate.slice(0, 10)}</p>
+
+  <p><em>{frontmatter.description}</em></p>
+  <p>Written by: {frontmatter.author}</p>
+  <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+  <div class="tags">
+    {
+      frontmatter.tags.map((tag) => (
+        <p class="tag">
+          <TagLink name={tag} />
+        </p>
+      ))
+    }
+  </div>
+  <slot />
+</BaseLayout>
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+
+  .tag {
+    margin: 0.25em;
+    border: dotted 1px #a1a1a1;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+    font-size: 1.15em;
+    background-color: #f8fcfd;
+  }
+</style>
